@@ -29,7 +29,7 @@ public class Usuario {
     @Column(name = "active_user")
     private String activeUser;
 
-    @OneToMany(mappedBy = "cliente")
-    private List<Tarjeta> tarjetas;
+    @Column(name = "password")
+    private String password;
 
 }
