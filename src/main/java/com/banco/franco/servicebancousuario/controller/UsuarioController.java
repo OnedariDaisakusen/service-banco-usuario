@@ -13,7 +13,7 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
-    @GetMapping("/getById")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") Integer id){
         return new ResponseEntity(usuarioService.findById(id), HttpStatus.OK);
     }

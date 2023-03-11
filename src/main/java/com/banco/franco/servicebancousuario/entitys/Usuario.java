@@ -3,6 +3,8 @@ package com.banco.franco.servicebancousuario.entitys;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_usuario")
 @Data
@@ -26,5 +28,8 @@ public class Usuario {
 
     @Column(name = "active_user")
     private String activeUser;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Tarjeta> tarjetas;
 
 }
