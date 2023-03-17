@@ -1,26 +1,54 @@
 package com.banco.franco.servicebancousuario.config;
 
+import com.banco.franco.servicebancousuario.filters.JwtAuthenticationFilter;
 import com.banco.franco.servicebancousuario.filters.UserAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class WebConfig {
+@EnableWebSecurity
+public class WebConfig extends WebSecurityConfigurerAdapter {
 
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 
-    public WebConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint) {
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public WebConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
-    @Bean
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                //.antMatchers("/api/user/**").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic();
+    }
+
+/*    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
@@ -30,17 +58,13 @@ public class WebConfig {
                 .and()
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers("/api/user/**").permitAll()
-                                .requestMatchers("/api/login").permitAll()
+                                .requestMatchers("/api/user/**", "/api/login").permitAll()
                                 .anyRequest().authenticated()
-
-                )
-                .httpBasic();
-
+                ).httpBasic();
         return http.build();
-    }
+    }*/
 
-    @Bean
+/*    @Bean
     public UserDetailsService users() {
         UserDetails user = User.builder()
                 .username("user")
@@ -53,5 +77,15 @@ public class WebConfig {
                 .roles("USER", "ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
+    }*/
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

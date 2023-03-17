@@ -2,10 +2,10 @@ package com.banco.franco.servicebancousuario.service;
 
 import com.banco.franco.servicebancousuario.entitys.Usuario;
 import com.banco.franco.servicebancousuario.repository.UsuarioRepository;
-import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import java.util.EmptyStackException;
 import java.util.Optional;
 
