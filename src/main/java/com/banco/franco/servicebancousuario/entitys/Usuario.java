@@ -1,14 +1,27 @@
 package com.banco.franco.servicebancousuario.entitys;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "tb_usuario")
 @Data
+@NoArgsConstructor
 public class Usuario {
+
+    public Usuario(String nombreCompleto, String numeroTelefonico, String documentoIdentidad, String userDeleted, String activeUser, String password) {
+        this.nombreCompleto = nombreCompleto;
+        this.numeroTelefonico = numeroTelefonico;
+        this.documentoIdentidad = documentoIdentidad;
+        this.userDeleted = userDeleted;
+        this.activeUser = activeUser;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
