@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 @Component
@@ -30,6 +31,6 @@ public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        OBJECT_MAPPER.writeValue(response.getOutputStream(), new ErrorDto("No esta autorizado", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED)));
+        OBJECT_MAPPER.writeValue(response.getOutputStream(), new ErrorDto(authException.getLocalizedMessage(), String.valueOf(HttpServletResponse.SC_UNAUTHORIZED)));
     }
 }

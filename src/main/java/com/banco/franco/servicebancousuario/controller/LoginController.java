@@ -1,5 +1,6 @@
 package com.banco.franco.servicebancousuario.controller;
 
+import com.banco.franco.servicebancousuario.dto.JwtResponse;
 import com.banco.franco.servicebancousuario.dto.LoginRequest;
 import com.banco.franco.servicebancousuario.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,9 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        //String jwt = JwtUtils.generateJwtToken(authentication);
-
-        return ResponseEntity.ok(JwtUtils.generateJwtTokenDTO(authentication));
+        JwtResponse response =  JwtUtils.generateJwtTokenDTO(authentication);
+        return ResponseEntity.ok(response);
     }
 }

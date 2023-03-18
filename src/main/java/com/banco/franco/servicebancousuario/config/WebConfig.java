@@ -2,6 +2,7 @@ package com.banco.franco.servicebancousuario.config;
 
 import com.banco.franco.servicebancousuario.filters.JwtAuthenticationFilter;
 import com.banco.franco.servicebancousuario.filters.UserAuthenticationEntryPoint;
+import com.banco.franco.servicebancousuario.filters.UsernamePasswordAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +27,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+
 
     public WebConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
@@ -44,7 +48,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new UsernamePasswordAuthFilter(), BasicAuthenticationFilter.class)
+                //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic();
     }
 
