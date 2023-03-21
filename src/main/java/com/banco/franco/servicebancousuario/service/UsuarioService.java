@@ -1,5 +1,6 @@
 package com.banco.franco.servicebancousuario.service;
 
+import com.banco.franco.servicebancousuario.dto.CuentaUsuarioResponse;
 import com.banco.franco.servicebancousuario.entitys.Usuario;
 
 public interface UsuarioService {
@@ -7,5 +8,7 @@ public interface UsuarioService {
     Usuario createUsuario(Usuario usuario);
     Usuario updateUsuario(Usuario usuario);
     void deleteUsuario(Integer id);
+    CuentaUsuarioResponse crearCuentaUsuario(Usuario usuario);
+
 
 }

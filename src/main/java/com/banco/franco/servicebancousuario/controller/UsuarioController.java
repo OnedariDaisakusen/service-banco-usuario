@@ -33,4 +33,9 @@ public class UsuarioController {
     public ResponseEntity<?> deleteUsuario(@RequestBody Integer id){
         return ResponseEntity.ok("dd");
     }
+
+    @PostMapping("/crearCuentaUsuario")
+    public ResponseEntity<?> crearCuentaUsuario(@RequestBody Usuario usuario){
+        return new ResponseEntity(usuarioService.crearCuentaUsuario(usuario), HttpStatus.CREATED);
+    }
 }

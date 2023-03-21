@@ -37,7 +37,7 @@ public class JwtUtils {
         String token = Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + 36000))
+                .setExpiration(new Date((new Date()).getTime() + 3600000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
 
 
