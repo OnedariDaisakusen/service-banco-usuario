@@ -46,10 +46,10 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //.antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/login").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(new UsernamePasswordAuthFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(new UsernamePasswordAuthFilter(), BasicAuthenticationFilter.class)
+                //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic();
     }
 
