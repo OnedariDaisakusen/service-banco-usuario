@@ -85,6 +85,13 @@ public class UsuarioServiceImpl implements  UsuarioService{
     @Transactional
 */
     public CuentaUsuarioResponse crearCuentaUsuario(Usuario usuario) {
+
+        Optional<Usuario> findByDni = usuarioRepository.findByDocumentoIdentidad(usuario.getDocumentoIdentidad());
+
+        if(findByDni.isPresent()){
+            throw new EntityExistsException("Existe un usuario con este documento");
+        }
+
         // Crear Usuario
         Usuario u = createUsuario(usuario);
 
