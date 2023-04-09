@@ -8,5 +8,6 @@ public class CuentaDTO {
     private Double saldo;
     private Integer idUsuario;
     private String estadoCuenta;
+    private String numeroCuenta;
 
 }
