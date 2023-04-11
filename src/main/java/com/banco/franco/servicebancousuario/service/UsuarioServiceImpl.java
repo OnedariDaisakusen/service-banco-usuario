@@ -6,6 +6,7 @@ import com.banco.franco.servicebancousuario.entitys.Usuario;
 import com.banco.franco.servicebancousuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,6 +27,9 @@ public class UsuarioServiceImpl implements  UsuarioService{
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public Usuario findById(Integer id) {
 
@@ -45,7 +49,13 @@ public class UsuarioServiceImpl implements  UsuarioService{
             throw new NullPointerException("Cuerpo de solicitud nula");
         }
 
-        return usuarioRepository.save(usuario);
+        usuario.setActiveUser("0");
+        usuario.setUserDeleted("0");
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
+        Usuario resp = usuarioRepository.save(usuario);
+        resp.setPassword("");
+        return resp;
     }
 
     @Override

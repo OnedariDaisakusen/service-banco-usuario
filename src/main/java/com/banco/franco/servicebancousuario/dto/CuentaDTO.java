@@ -9,5 +9,7 @@ public class CuentaDTO {
     private Integer idUsuario;
     private String estadoCuenta;
     private String numeroCuenta;
+    private String numeroCuentaInterbancario;
+
 
 }
