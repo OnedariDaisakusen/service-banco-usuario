@@ -113,7 +113,7 @@ public class UsuarioServiceImpl implements  UsuarioService{
 
         try {
 
-            URI uri = new URI("http://localhost:8081/api/cuenta/crearCuentaPorUsuario");
+            URI uri = new URI("http://ec2-3-93-39-224.compute-1.amazonaws.com:8082/api/cuenta/crearCuentaPorUsuario");
 
             ResponseEntity<CuentaDTO> response = restTemplate.postForEntity(uri, usuario, CuentaDTO.class);
 
