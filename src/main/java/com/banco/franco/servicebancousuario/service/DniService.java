@@ -1,7 +1,8 @@
 package com.banco.franco.servicebancousuario.service;
 
 import com.banco.franco.servicebancousuario.dto.PersonDTO;
+import org.springframework.http.ResponseEntity;
 
 public interface DniService {
-    PersonDTO obtenerDatosPorDni(String dni);
+    ResponseEntity obtenerDatosPorDni(String dni);
 }

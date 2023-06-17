@@ -5,6 +5,7 @@ import com.banco.franco.servicebancousuario.dto.CuentaUsuarioResponse;
 import com.banco.franco.servicebancousuario.entitys.Usuario;
 import com.banco.franco.servicebancousuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class UsuarioServiceImpl implements  UsuarioService{
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Value("${URL_SERVICE_BANCO_CUENTA}")
+    private String urlCuenta;
 
     @Override
     public Usuario findById(Integer id) {
@@ -98,24 +102,21 @@ public class UsuarioServiceImpl implements  UsuarioService{
 
         Optional<Usuario> findByDni = usuarioRepository.findByDocumentoIdentidad(usuario.getDocumentoIdentidad());
 
-        if(findByDni.isPresent()){
-            throw new EntityExistsException("Existe un usuario con este documento");
-        }
+        Usuario usuarioBD = null;
 
-        // Crear Usuario
-        Usuario u = createUsuario(usuario);
-
-        if(u == null){
-            throw new NullPointerException("Error creando Usuario");
+        if(!findByDni.isPresent()){
+            usuarioBD = createUsuario(usuario);
+        }else{
+            usuarioBD = findByDni.get();
         }
 
         CuentaDTO cuentaDTO = null;
 
         try {
 
-            URI uri = new URI("http://ec2-3-93-39-224.compute-1.amazonaws.com:8082/api/cuenta/crearCuentaPorUsuario");
+            URI uri = new URI(urlCuenta + "/api/cuenta/crearCuentaPorUsuario");
 
-            ResponseEntity<CuentaDTO> response = restTemplate.postForEntity(uri, usuario, CuentaDTO.class);
+            ResponseEntity<CuentaDTO> response = restTemplate.postForEntity(uri, usuarioBD, CuentaDTO.class);
 
             cuentaDTO = response.getBody();
 
@@ -129,7 +130,7 @@ public class UsuarioServiceImpl implements  UsuarioService{
         }
 
         CuentaUsuarioResponse resp = new CuentaUsuarioResponse();
-        resp.setUsuario(u);
+        resp.setUsuario(usuarioBD);
         resp.setCuenta(cuentaDTO);
 
         return resp;

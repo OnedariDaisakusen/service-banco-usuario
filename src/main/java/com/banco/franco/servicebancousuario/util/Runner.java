@@ -24,9 +24,9 @@ public class Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<Usuario> usuarios = new ArrayList<>();
+/*        List<Usuario> usuarios = new ArrayList<>();
         usuarios.add(new Usuario("Franco Villanueva", "987654321", "70859665","0","0",passwordEncoder.encode("123456")));
         usuarios.add(new Usuario("Karen Gonzales", "985654212", "65985421","0","0",passwordEncoder.encode("123456")));
-        userRepository.saveAll(usuarios);
+        userRepository.saveAll(usuarios);*/
     }
 }

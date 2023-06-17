@@ -15,6 +15,6 @@ public class DniController {
 
     @GetMapping("/{dni}")
     public ResponseEntity<?> obtenerDni(@PathVariable(name = "dni") String dni){
-        return ResponseEntity.ok(dniService.obtenerDatosPorDni(dni));
+        return dniService.obtenerDatosPorDni(dni);
     }
 }
